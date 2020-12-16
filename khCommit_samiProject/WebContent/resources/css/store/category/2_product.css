@@ -1,0 +1,39 @@
+#productBox {
+	width: 1820px;
+	height: 350px;
+	margin-top: 30px;
+	margin-bottom: 30px;
+	padding-left: 120px;
+	padding-right: 120px;
+}
+
+.p_box {
+	width: 25%;
+	height: 100%;
+	margin-top: 10px;
+	float: left;
+}
+
+.productImg_box {
+	padding-top: 10px;
+	width: 100%;
+	height: 70%;
+}
+
+.product_textBox {
+	width: 100%;
+	height: 30%;
+	font-size: 16px;
+}
+
+.p_img {
+	width: 60%;
+	height: 80%;
+	margin-top: 20px;
+	border-radius: 10px;
+}
+
+#index_btn {
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
