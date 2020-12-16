@@ -1,0 +1,25 @@
+@charset "UTF-8";
+header {
+	height: 100px;
+}
+
+header>div {
+	float: left;
+}
+
+#main-logo {
+	width: 20%;
+	height: 100%;
+}
+
+#pageMoveBtn {
+	width: 80%;
+	height: 100%;
+	line-height: 145px;
+	text-align: right;
+}
+
+#pageMoveBtn>a {
+	color: black;
+	margin-right: 20px;
+}

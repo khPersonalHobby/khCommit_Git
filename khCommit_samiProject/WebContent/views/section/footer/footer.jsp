@@ -5,18 +5,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<link href="/resources/css/section/footer/footer.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-	<header>
-		<%@ include file="/views/section/header/headerIndex.jsp" %>
-	</header>
-
-	<%@ include file="/views/section/navi/naviIndex.jsp" %>
-
-	<%@ include file="/views/community/index/content.jsp" %>
-
 	<footer>
-		<%@ include file="/views/section/footer/footer.jsp" %>
+		<a href="#">전체서비스</a>   |    <a href="#">이용약관</a>   |    <a href="#">개인정보처리방침</a>   |    <a href="#">통합검색 고객센터</a>    |   © PersonalHobby Corp.
 	</footer>
 </body>
 </html>
