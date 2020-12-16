@@ -11,7 +11,7 @@ public class MemberService {
 	
 	MemberDAO mDAO = new MemberDAO();
 	
-	public boolean insertMember(Member m, MemberAddress ma) {
+public boolean insertMember(Member m, MemberAddress ma) {
 		Connection conn = JDBCTemplate.getConnection();
 		boolean result = mDAO.insertMember(conn,m,ma);
 		if(result==true)
@@ -26,18 +26,45 @@ public class MemberService {
 		
 	}
 
-	public String findId(String phone, String userName) {
-			Connection conn = JDBCTemplate.getConnection();
-			String userId = mDAO.findId(conn, phone, userName);
-			JDBCTemplate.close(conn);
-			return userId;
-		}
-
-	public Member loginMember(String userId, String userPw) {
-		Connection conn =JDBCTemplate.getConnection();
-		Member m = mDAO.loginMember(conn, userId, userPw);
+public String findId(String phone, String userName) {
+		Connection conn = JDBCTemplate.getConnection();
+		String userId = mDAO.findId(conn, phone, userName);
 		JDBCTemplate.close(conn);
-		return m;	
+		return userId;
 	}
+
+public Member loginMember(String userId, String userPw) {
+	Connection conn =JDBCTemplate.getConnection();
+	Member m = mDAO.loginMember(conn, userId, userPw);
+	JDBCTemplate.close(conn);
+	return m;	
+}
+
+public int deleteMember(String userId) {
+	Connection conn = JDBCTemplate.getConnection();
+	int result = mDAO.deleteMember(conn,userId);
+	if(result>0) {
+		JDBCTemplate.commit(conn);
+	}else {
+		JDBCTemplate.rollback(conn);
+	}
+	JDBCTemplate.close(conn);
+	
+	return result;
+}
+
+
+public int updateMember(Member m) {
+	Connection conn = JDBCTemplate.getConnection();
+	int result = mDAO.updateMember(conn, m);
+	if(result>0)
+	{
+		JDBCTemplate.commit(conn);
+	}else {
+		JDBCTemplate.rollback(conn);
+	}
+	JDBCTemplate.close(conn);
+	return result;
+}
 
 }

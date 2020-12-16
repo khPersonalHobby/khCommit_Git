@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@ page import="kr.or.iei.member.model.vo.Member"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -8,6 +9,9 @@
 <link href="/resources/css/section/header/headerShopPage.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
+<%
+		Member m = (Member) session.getAttribute("member");
+	%>
 	<header>
 		<div id="community">
 			<a href="/index.jsp">커뮤니티</a>
@@ -17,7 +21,11 @@
 				height="100px" /></a>
 		</div>
 		<div id="login">
+			<%if (m != null){ %>
+			<a href="/myPage.kh">[ <%=m.getMemberName()%> ]</a>
+		<%} else{%>
 			<a href="/views/member/login/loginForm.jsp">로그인</a>
+			<%} %>
 		</div>
 	</header>
 </body>

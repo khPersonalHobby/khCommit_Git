@@ -89,7 +89,6 @@ public String findId(Connection conn, String phone, String userName) {
 		return userId;
 	
 	}
-
 public Member loginMember(Connection conn, String userId, String userPw) {
 	PreparedStatement pstmt = null;
 	ResultSet rset = null;
@@ -121,6 +120,69 @@ public Member loginMember(Connection conn, String userId, String userPw) {
 		JDBCTemplate.close(pstmt);
 	}
 	return m;
+}
+
+public int deleteMember(Connection conn, String userId) {
+	PreparedStatement pstmt = null;
+	String query ="update member_date set MEMBER_WITHDRAW_YN='Y' where member_no=(select member_no from member where member_id='user2')";
+	/*
+	 * String query =
+	 * "UPDATE MEMBER LEFT JOIN MEMBER_DATE set MEMBER_WITHDRAW_YN='Y' where MEMBER_ID=?"
+	 * ;
+	 */
+	int result = 0;
+	try {
+		pstmt = conn.prepareStatement(query);
+		pstmt.setString(1, userId);
+		result = pstmt.executeUpdate(); // insert delete update는 앞에 꺼로 해야함
+
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} finally {
+		JDBCTemplate.close(pstmt);
+	}
+
+	return result;
+}
+
+
+
+public int updateMember(Connection conn, Member m) {
+	    PreparedStatement pstmt =null;
+		String query = "update member " + 
+				"set member_pw=?, member_name=?, member_nickname=?, " + 
+				"member_email=?, member_phone=?" + 
+				" where member_id=? ";
+		int result=0;
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, m.getMemberPw());
+			pstmt.setString(2, m.getMemberName());
+			pstmt.setString(3, m.getMemberNickname());
+			pstmt.setString(4, m.getMemberEmail());
+			pstmt.setString(5, m.getMemberPhone());
+			pstmt.setString(6, m.getMemberId());
+			
+			result = pstmt.executeUpdate();
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+		
+		
+		
+		
+		
+		
+		
+	
 }
 
 }
