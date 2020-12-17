@@ -85,43 +85,7 @@
 							<% } %>							
 									<td><button class="buttonRayout">삭제</button></td>
 								</tr>
-							
-<!-- 								<tr>
-									<td>4</td>
-									<td>박현아</td>
-									<td>user4</td>
-									<td>010-1111-2222</td>
-									<td>hyuna@hyuna.god</td>
-									<td>2020.20.20</td>
-									<td><button class="buttonRayout">삭제</button></td>
-								</tr>
-								<tr>
-									<td>3</td>
-									<td>박현아</td>
-									<td>user3</td>
-									<td>010-1111-2222</td>
-									<td>hyuna@hyuna.god</td>
-									<td>2020.20.20</td>
-									<td><button class="buttonRayout">삭제</button></td>
-								</tr>
-								<tr>
-									<td>2</td>
-									<td>박현아</td>
-									<td>user2</td>
-									<td>010-1111-2222</td>
-									<td>hyuna@hyuna.god</td>
-									<td>2020.20.20</td>
-									<td><button class="buttonRayout">삭제</button></td>
-								</tr>
-								<tr>
-									<td>1</td>
-									<td>박현아</td>
-									<td>user1</td>
-									<td>010-1111-2222</td>
-									<td>hyuna@hyuna.god</td>
-									<td>2020.20.20</td>
-									<td><button class="buttonRayout">삭제</button></td>
-								</tr> -->
+
 							</table>
 						</div>
 					</div>
