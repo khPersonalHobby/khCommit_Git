@@ -4,10 +4,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import kr.or.iei.common.JDBCTemplate;
 import kr.or.iei.member.model.vo.Member;
 import kr.or.iei.member.model.vo.MemberAddress;
+import kr.or.iei.member.model.vo.MemberDate;
+import kr.or.iei.member.model.vo.MemberPageData;
 
 public class MemberDAO {
 
@@ -123,4 +126,157 @@ public Member loginMember(Connection conn, String userId, String userPw) {
 	return m;
 }
 
+public MemberPageData selectAllMemberPage(Connection conn, int currentPage, int recordCountPerPage) {
+	PreparedStatement pstmt = null;
+	ResultSet rset = null;
+	
+	ArrayList<Member> mList = new ArrayList<Member>();
+	ArrayList<MemberDate> mdList = new ArrayList<MemberDate>();
+	
+	MemberPageData mpd = new MemberPageData();
+	mpd.setmList(mList);
+	mpd.setMdList(mdList);
+	
+	int start = currentPage * recordCountPerPage - (recordCountPerPage - 1);
+	int end = currentPage * recordCountPerPage;
+	
+	String query = "SELECT * FROM (SELECT * FROM MEMBER LEFT JOIN MEMBER_DATE USING (MEMBER_NO) ORDER BY MEMBER_NO) WHERE ROWNUM between ? and ?";
+	
+	try {
+		pstmt = conn.prepareStatement(query);
+		pstmt.setInt(1, start);
+		pstmt.setInt(2, end);
+
+		rset = pstmt.executeQuery();
+
+		while(rset.next()) {
+			Member m = new Member();
+			MemberDate md=new MemberDate();
+			
+			m.setMemberNo(rset.getInt("member_no"));
+			m.setMemberId(rset.getString("member_id"));
+			m.setMemberPw(rset.getString("member_pw"));
+			m.setMemberName(rset.getString("member_name"));
+			m.setMemberNickname(rset.getString("member_nickname"));
+			m.setMemberEmail(rset.getString("member_email"));
+			m.setMemberPhone(rset.getString("member_phone"));
+			
+			md.setMemberNo(rset.getInt("member_no"));
+			md.setMemberJoinDate(rset.getDate("member_join_date"));
+			md.setMemberWithdrawDate(rset.getDate("member_withdraw_date"));
+			md.setMemberWithdrawYN((rset.getString("member_withdraw_YN")).charAt(0));
+			
+			mList.add(m);
+			mdList.add(md);
+		}
+
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} finally {
+		JDBCTemplate.close(rset);
+		JDBCTemplate.close(pstmt);
+		
+	}
+	
+	return mpd;
+
 }
+
+
+public String getPageNavi(Connection conn, int currentPage, int recordCountPerPage, int naviCountPerPage) {
+	
+	int memberTotalCount = memberTotalCount(conn);
+	
+	int pageTotalCount;
+	
+	if(memberTotalCount % recordCountPerPage > 0) {
+		pageTotalCount = memberTotalCount / recordCountPerPage + 1;
+	} else {
+		pageTotalCount = memberTotalCount / recordCountPerPage + 0;
+	}
+	
+	int startNavi = (currentPage - 1) / (naviCountPerPage) * naviCountPerPage + 1;
+	int endNavi = startNavi + naviCountPerPage - 1;
+	
+	if(endNavi > pageTotalCount) {
+		endNavi = pageTotalCount;
+	}
+	
+	StringBuilder sb = new StringBuilder();
+	
+	if(startNavi != 1) {
+		sb.append("<a href='/memberAllListPage.kh?currentPage="+(startNavi-1)+"'><</a> ");
+	}
+	
+	for(int i = startNavi; i<=endNavi; i++) {
+		if(i==currentPage) {
+			sb.append("<a href='/memberAllListPage.kh?currentPage="+i+"'><b>"+i+"</b></a> ");	
+		} else {
+			sb.append("<a href='/memberAllListPage.kh?currentPage="+i+"'>"+i+"</a> ");	
+		}
+	}
+	
+	if(endNavi != pageTotalCount) {
+		sb.append("<a href='/memberAllListPage.kh?currentPage="+(startNavi-1)+"'><</a> ");
+	}
+	
+	return sb.toString();
+	
+	
+	
+}
+
+public int memberTotalCount(Connection conn) {
+	PreparedStatement pstmt = null;
+	ResultSet rset = null;
+	int memberTotalCount = 0;
+	
+	String query = "SELECT COUNT(*) as totalCount "
+			+ "FROM member";
+	
+	try {
+		pstmt = conn.prepareStatement(query);
+		rset = pstmt.executeQuery();
+		rset.next();
+		
+		memberTotalCount = rset.getInt("totalCount");
+		
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} finally {
+		JDBCTemplate.close(rset);
+		JDBCTemplate.close(pstmt);
+	}
+	
+	return memberTotalCount;
+}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="kr.or.iei.member.model.vo.MemberPageData" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="kr.or.iei.member.model.vo.Member" %>
+<%@ page import="kr.or.iei.member.model.vo.MemberDate" %>
+	
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -9,6 +14,16 @@
 <link href="/resources/css/admin/member/manage.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
+
+<%
+	MemberPageData mpd = (MemberPageData)request.getAttribute("pageData");
+	
+	ArrayList<Member> mList = mpd.getmList();
+	ArrayList<MemberDate> mdList = mpd.getMdList();
+	String pageNavi = mpd.getPageNavi();
+	
+%>	
+	
 	<div id="wrapper">
 		<div id="header">
 				<%@ include file="/views/admin/section/header.jsp"%>
@@ -32,7 +47,6 @@
 							<th>검색</th>
 							<td>
 								<select id="searchOpt">
-									<option value="회원번호">회원번호</option>
 									<option value="이름">이름</option>
 									<option value="ID">ID</option>
 								</select>
@@ -52,18 +66,27 @@
 									<th>휴대폰</th>
 									<th>이메일</th>
 									<th>가입일</th>
+									<th>탈퇴여부</th>
+									<th>탈퇴일</th>
 									<th>기능</th>
 								</tr>
+							 <% for(Member m : mList) { %> 
 								<tr>
-									<td>5</td>
-									<td>박현아</td>
-									<td>user5</td>
-									<td>010-1111-2222</td>
-									<td>hyuna@hyuna.god</td>
-									<td>2020.20.20</td>
+									<td><%= m.getMemberNo()%></td>
+									<td><%= m.getMemberName()%></td>
+									<td><%= m.getMemberId()%></td>
+									<td><%= m.getMemberPhone()%></td>
+									<td><%= m.getMemberEmail()%></td>
+							<% } %>	 
+							<% for (MemberDate md : mdList) { %>		
+									<td><%= md.getMemberJoinDate()%></td>
+									<td><%= md.getMemberWithdrawYN() %></td>
+									<td><%= md.getMemberWithdrawDate() %></td>
+							<% } %>							
 									<td><button class="buttonRayout">삭제</button></td>
 								</tr>
-								<tr>
+							
+<!-- 								<tr>
 									<td>4</td>
 									<td>박현아</td>
 									<td>user4</td>
@@ -98,11 +121,8 @@
 									<td>hyuna@hyuna.god</td>
 									<td>2020.20.20</td>
 									<td><button class="buttonRayout">삭제</button></td>
-								</tr>
+								</tr> -->
 							</table>
-						</div>
-						<div id="buttonPanel">
-							<button id="memberInsertBtn" class="buttonRayout">회원등록</button>
 						</div>
 					</div>
 				</div>
