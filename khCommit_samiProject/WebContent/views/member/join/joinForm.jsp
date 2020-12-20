@@ -22,40 +22,23 @@
 <script src="https://code.jquery.com/jquery-3.5.1.js"
 		integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
 		crossorigin="anonymous"></script>
-	<script>
-		$(function() {
-			$('#category_tap').hover(function() {
-				$('#t-wrapper').css('z-index', '99');
-				$('#t-wrapper').show();
-				$('#carouselExampleIndicators').css('z-index', '-1');
-				$('div[id*=t-]').show();
-			});
-			$('div[id*=t-]').hover(function() {
-				$('#t-wrapper').children().show();
-			});
-			$('#t-wrapper').hover(function() {
-				$(this).children().show();
-			}, function() {
-				$('#t-wrapper').hide();
-				$('#t-wrapper').css('z-index', '-1');
-				$('#carouselExampleIndicators').css('z-index', '99');
-			});
-		});
-	</script>
+	
 
 		</div>
 		
 		<div id="container">
 		
 			<h1>회원정보 입력</h1>
-			<form action="/joinForm.kh" method="post" id="memeber_form">
+			<form action="/joinForm.kh" method="post" id="member_form" name="joinForm" onsubmit="return maincheck()">
 				<fieldset id="join_box">
 					<legend>필수사항 </legend>
 					<div>
 						<div>아이디</div>
 						<div>
-							<input type="text" name="userId"
+							<input type="text" name="userId" id="userId"
 								placeholder="   공백 없는 영문/숫자 포함 6-20자" />
+							<input type="button" onclick="checkId();" class="button" id="idCheck" value="중복확인"/>
+							<input type="hidden" name="pilsucheck" value='n'/>
 						</div>
 					</div>
 					<div>
@@ -80,15 +63,19 @@
 					<div>
 						<div>닉네임</div>
 						<div>
-							<input type=text " name="userNickName" placeholder="   공백없는 문자 최대 6자" />
+							<input type=text " name="userNickname" placeholder="   한글만 2~6자" />
+							<input type="button" onclick="checkNickname();" class="button" id="nicknameCheck" value="중복확인"/>
+							<input type="hidden" name="pilsucheck" value='n'/>
 						</div>
 					</div>
 					<div class="info_box">
 						<div>이메일</div>
 						<div>
-							<input class="email" type="text" />@ 					
+							<input class="email" type="text" name="email"/> @
+							<input class="email" type="text" name="email2"/>
+							
 							<select name="find_email" class="email">
-								<option value="">직접입력</option>
+								<option value="" id="free">직접입력</option>
 								<option value="naver.com">naver.com</option>
 								<option value="nate.com">nate.com</option>
 								<option value="dreamwiz.com">dreamwiz.com</option>
@@ -102,6 +89,7 @@
 								<option value="freechal.com">freechal.com</option>
 								<option value="hanmail.net">hanmail.net</option>
 								<option value="hotmail.com">hotmail.com</option>
+								
 							</select>
 							<div>
 								<label>
@@ -115,7 +103,7 @@
 					<div class="info_box">
 						<div>휴대전화번호</div>
 						<div>
-							<input class="phone" type="tel" name="phone1" maxlength="4" onkeypress="onlyNumber();" /> -
+							<input class="phone" type="tel" name="phone1" maxlength="3" onkeypress="onlyNumber();" /> -
 							<input class="phone" type="tel" name="phone2" maxlength="4" onkeypress="onlyNumber();" /> -
 							<input class="phone" type="tel" name="phone3" maxlength="4" onkeypress="onlyNumber();" />
 							<button type="button" id="phone_send_check" class="button" onclick="sendSMSphone();">SMS인증</button>
@@ -124,7 +112,7 @@
 								<input type="checkbox" name="sms"/>
 								<span> SMS를수신하겠습니다.</span>
 								</label>
-							<p class="info_box_font">SMS 수신에 동의하시면 여러가지 할인혜택과 각종 이벤트 정보를 받아보실 수 있습니다.<br />회원가입관련,주문배송관련 등의 SMS는 수신동의와 상관없이 구매 회원에게 발송됩니다.<br /></p>
+							<p class="info_box_font">SMS 수신에 동의하시면 여러가지 할인혜택과 각종 이벤트 정보를 받아보실 수 있습니다.<br>회원가입관련,주문배송관련 등의 SMS는 수신동의와 상관없이 구매 회원에게 발송됩니다.<br /></p>
 							</div>
 						</div>
 					</div>
@@ -140,14 +128,14 @@
 					<div>주소</div>
 						<div>
 							<input class="addr" type="text" name="addr" placeholder="   주소를 입력해주세요"  />
-							<input class="addr" type="text" name="addr_number" placeholder="   우편번호 입력해주세요"  />
+							<input class="addr" type="text" name="addrNumber" placeholder="   우편번호 입력해주세요"  />
 						</div>
 					</div>
 					<div class="info_box">
 						<div>프로필사진</div>
 						<div>
 							<div id="profileImgWindow"></div>
-							<input type="file" value="test">
+							<input type="file" value="test"/>
 						</div>
 					</div>
 					<div>
@@ -165,12 +153,46 @@
 
 	<script>
 		$(function() {
+			
+		
+			
+			$('select[name=find_email]').change(function(){
+				$('input[name=email2]').css('background-color', 'rgb(246,246,246)');
+				$('input[name=email2]').prop('readonly','true');
+				var email=$(this).val();
+				$('input[name=email2]').val(email);
+			});
+			
+			$('#idCheck').click(function(){
+				var $userId = $('input[name=userId]');
+				if(!/^[a-zA-Z0-9]{6,20}$/.test($userId.val())){
+					alert("아이디는 영문/숫자포함 6~20자로 입력해주세요!");
+					return false;
+				}else{
+					window.open("idCheckForm.jsp","checkForm","width=450, height=200");
+					$(this).next().val('y');
+				}
+				
+			});
+			
+			$('#nicknameCheck').click(function(){
+				var $userNickname = $('input[name=userNickname]');
+				if(!/^[가-힣0-9]{2,6}$/.test($userNickname.val())){
+					alert('닉네임은 한글/숫자포함 2~6자 로 입력해주세요!');
+					return false;
+				}else{
+					window.open("nicknameCheckForm.jsp","checkForm","width=450, height=200");
+					$(this).next().val('y');
+				}
+			});
+			
+				
 			$('#member_form').submit(function() {
 				var $userId = $('input[name=userId]');
 				var $userPw = $('input[name=userPw]');
 				var $userPw_re = $('input[name=userPw_re]');
 				var $userName = $('input[name=userName]');
-				var $userNickName = $('input[name=userNickName]');
+				var $userNickname = $('input[name=userNickname]');
 				var $addr_number = $('input[name=addr_number]');
 				
 				if(!/^[a-zA-Z0-9]{6,20}$/.test($userId.val())){
@@ -185,19 +207,18 @@
 				}else if(!/^[가-힣]{2,5}$/.test($userName.val())){
 					alert("이름은 2글자이상 한글만 입력가능합니다!");
 					return false;
-				}else if(!/^[가-힣0-9]{2,6}$/.test($userNickName.val())){
+				}else if(!/^[가-힣0-9]{2,6}$/.test($userNickname.val())){
 					alert('닉네임은 한글/숫자포함 2~6자 로 입력해주세요!');
 					return false;
-				}else if(!/^[0-9]{2,5}$/.test($addr_number.val())){
+				}else if(!/^[0-9]{2,5}$/.test($addrNumber.val())){
 					alert('우편번호는 숫자만 입력해주세요');
 					return false;
 				}
-				return ture;
-				//검증표현식쓰기
-			});
+				return true;
 			
+			});
+
 			$('input').focusin(function(){
-				console.log(this);
 				$(this).css('outline','none');
 				$(this).css('border','2px solid rgb(169, 120, 254)');
 				
@@ -207,8 +228,21 @@
 				$(this).css('border','2px solid lightgrey');
 			});
 			
-
+			
 		});
+		
+		
+	</script>
+	<script>
+	
+	//submit 전에 확인
+	function maincheck() {
+	   if($('input[name=pilsucheck]').val()=='n'){
+	      alert('중복확인을 해주세요');
+	      return false;
+	      }
+	      
+	}
 	</script>
 
 </body>

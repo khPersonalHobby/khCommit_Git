@@ -18,13 +18,17 @@ header>div {
 	float: left;
 	height: 145px;
 }
-
+#login>a{
+   display: inline-block;
+   padding-top: 10px;
+   margin-left: 10px;
+}
 #community {
-	width: 10%;
+	width: 20%;
 }
 
 #logo {
-	width: 80%;
+	width: 60%;
 	text-align:center;
 }
 #logo>a{
@@ -35,6 +39,6 @@ header>div {
 }
 
 #login {
-	width: 10%;
+	width: 20%;
 	text-align: right;
 }

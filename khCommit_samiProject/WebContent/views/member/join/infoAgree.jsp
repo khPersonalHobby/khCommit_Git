@@ -20,26 +20,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.js"
 		integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
 		crossorigin="anonymous"></script>
-	<script>
-		$(function() {
-			$('#category_tap').hover(function() {
-				$('#t-wrapper').css('z-index', '99');
-				$('#t-wrapper').show();
-				$('#carouselExampleIndicators').css('z-index', '-1');
-				$('div[id*=t-]').show();
-			});
-			$('div[id*=t-]').hover(function() {
-				$('#t-wrapper').children().show();
-			});
-			$('#t-wrapper').hover(function() {
-				$(this).children().show();
-			}, function() {
-				$('#t-wrapper').hide();
-				$('#t-wrapper').css('z-index', '-1');
-				$('#carouselExampleIndicators').css('z-index', '99');
-			});
-		});
-	</script>
+	
 
 		</div>
 		<div id="container">

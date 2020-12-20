@@ -8,12 +8,13 @@ public class Member {
 	private String memberNickname;
 	private String memberEmail;
 	private String memberPhone;
+	private int imgNo;
 	public Member() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	public Member(int memberNo, String memberId, String memberPw, String memberName, String memberNickname,
-			String memberEmail, String memberPhone) {
+			String memberEmail, String memberPhone, int imgNo) {
 		super();
 		this.memberNo = memberNo;
 		this.memberId = memberId;
@@ -22,6 +23,7 @@ public class Member {
 		this.memberNickname = memberNickname;
 		this.memberEmail = memberEmail;
 		this.memberPhone = memberPhone;
+		this.imgNo = imgNo;
 	}
 	public int getMemberNo() {
 		return memberNo;
@@ -64,6 +66,12 @@ public class Member {
 	}
 	public void setMemberPhone(String memberPhone) {
 		this.memberPhone = memberPhone;
+	}
+	public int getImgNo() {
+		return imgNo;
+	}
+	public void setImgNo(int imgNo) {
+		this.imgNo = imgNo;
 	}
 	
 	

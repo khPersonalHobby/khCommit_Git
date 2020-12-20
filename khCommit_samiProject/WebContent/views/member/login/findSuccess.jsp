@@ -20,26 +20,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.js"
 		integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
 		crossorigin="anonymous"></script>
-	<script>
-		$(function() {
-			$('#category_tap').hover(function() {
-				$('#t-wrapper').css('z-index', '99');
-				$('#t-wrapper').show();
-				$('#carouselExampleIndicators').css('z-index', '-1');
-				$('div[id*=t-]').show();
-			});
-			$('div[id*=t-]').hover(function() {
-				$('#t-wrapper').children().show();
-			});
-			$('#t-wrapper').hover(function() {
-				$(this).children().show();
-			}, function() {
-				$('#t-wrapper').hide();
-				$('#t-wrapper').css('z-index', '-1');
-				$('#carouselExampleIndicators').css('z-index', '99');
-			});
-		});
-	</script>
+	
 
 		</div>
 		<div id="container">
@@ -48,8 +29,14 @@
 					<li id="click_id">아이디찾기</li>
 					<li id="click_pw">비밀번호 찾기</li>
 				</ul>	
+				<% String memberId=(String)request.getAttribute("memberId"); %>
 				<div id="find_id_text">
-					회원 이메일 주소(dms****************)로 정보가 발송되었습니다.메일을 확인하시기 바랍니다.				
+				<center>
+					당신의 아이디는 <%=memberId %>입니다.
+					<input type="hidden" name="userPw" id="userPw" placeholder="변경할 비밀번호를 입력해주세요"/>
+					<input type="hidden" name="userPw_re" id="userPw_re" placeholder="변경할 비밀번호를 다시 입력해주세요"/>
+					<button style="display:none;" id="checkBtn">확인</button>
+				</center>		
 				</div>
 				<div id="login_box">
 					<a href="/views/member/login/loginForm.jsp">로그인</a>

@@ -47,11 +47,11 @@ public class MemberAllListPageServlet extends HttpServlet {
 		request.setAttribute("pageData", mpd);
 		
 		view.forward(request, response);
-		
-		
-		
+
 	}
 
+	
+	
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
