@@ -1,6 +1,8 @@
 package kr.or.iei.member.controller;
 
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -40,9 +42,29 @@ public class MemberInsertServlet extends HttpServlet {
 		//2.이전페이지 전송값 저장
 		Member m = new Member();
 		m.setMemberId(request.getParameter("userId"));
-		m.setMemberPw(request.getParameter("userPw"));
+		
+		
+		String pw = request.getParameter("userPw");
+		StringBuffer sb = new StringBuffer();
+		try {
+			MessageDigest md=MessageDigest.getInstance("MD5");//SHA-1 또는 MD5
+			md.update(pw.getBytes());
+			byte [] digest = md.digest();
+	
+			for(byte b:digest) {
+				sb.append(Integer.toHexString(b&0xff));
+			}
+			
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		pw=sb.toString();
+		
+		
+		m.setMemberPw(pw);
 		m.setMemberName(request.getParameter("userName"));
-		m.setMemberNickname(request.getParameter("userNickName"));
+		m.setMemberNickname(request.getParameter("userNickname"));
 		
 		String email1=request.getParameter("email");
 		String email2=request.getParameter("email2");
@@ -58,7 +80,7 @@ public class MemberInsertServlet extends HttpServlet {
 		ma.setAddress(request.getParameter("addr"));
 		ma.setPostNum(Integer.parseInt(request.getParameter("addrNumber")));
 		
-		boolean result = new MemberService().insertMember(m,ma);
+		boolean result = new MemberService().insertMember(m, ma);
 	
 		//3.비즈니스 로직 처리
 		if(result==true)

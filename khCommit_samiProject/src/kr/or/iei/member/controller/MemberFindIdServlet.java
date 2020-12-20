@@ -32,27 +32,36 @@ public class MemberFindIdServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		
+		String userNameEmail = request.getParameter("userNameEmail");
+		String email = request.getParameter("email");
+		String userNamePhone = request.getParameter("userNamePhone");
 		String phone = request.getParameter("phone");
-		String userName = request.getParameter("userName2");
 		
-		String userId=null;
-		userId = new MemberService().findId(phone, userName);
+		String memberId=null;
 		
+		if(userNameEmail!="") // 이메일로 ID 찾기의 이름이 비어있지 않을 경우 
+		{
+			memberId = new MemberService().findIdEmail(userNameEmail, email);
+			
+		}else if(userNamePhone!="") //휴대폰으로 ID 찾기의 이름이 비어있지 않을 경우
+		{
+			memberId = new MemberService().findIdPhone(userNamePhone, phone);
+		}
 		
-		if(userId==null) {
+		if(memberId!=null) {
+			RequestDispatcher view = request.getRequestDispatcher("/views/member/login/findSuccess.jsp");
+			request.setAttribute("memberId", memberId);
+			view.forward(request, response);
+		}else {
 			response.setCharacterEncoding("UTF-8");
 			response.setContentType("text/html; charset=UTF-8");
 			
 			PrintWriter out = response.getWriter();
 			
-			out.println("<script>alert('입력한 정보와 일치하는 ID 값이 없습니다.')</script>");
+			out.println("<script>alert('입력한 정보와 일치하는 회원이 없습니다.')</script>");
 			out.println("<script>location.replace('/views/member/login/findId.jsp');</script>");
-		}else {
-			RequestDispatcher view = request.getRequestDispatcher("/views/member/login/findSuccess.jsp");
-			request.setAttribute("userId", userId);
-			view.forward(request, response);
-		}
+		}	
+		
 		
 	}
 

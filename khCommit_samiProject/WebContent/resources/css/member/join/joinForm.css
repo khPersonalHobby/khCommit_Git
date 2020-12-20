@@ -42,21 +42,30 @@
 	float: left;
 }
 #join_box>div>div:nth-child(2)>input[name^=user]{
-	width:90%;
+	width:70%;
 	height: 70%;
 	border-radius: 10px;
 	margin:2%;
 	border: 1px solid lightgrey;
+}
+#idCheck{
+	width:15%;
+	height:65%;
+}
+
+#nicknameCheck{
+	width:15%;
+	height:65%;
 }
 
 .info_box{
 	height:14% !important;
 }
 .email{
-	width: 40%;
+	width: 27%;
 	height: 30%;
 	border-radius: 10px;
-	margin:2%;
+	margin:1%;
 	border: 1px solid lightgrey;
 }
 .phone{
@@ -88,7 +97,7 @@
 	margin: 3% auto;
 }
 #phone_send_check{
-	width:13%;
+	width:15%;
 	height:30%;
 }
 #phone_get_check{
